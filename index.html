@@ -5,45 +5,114 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Gerador de Link do WhatsApp</title>
   <style>
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #000000;
+      --input-bg: #f0f0f0;
+      --btn-bg: #4CAF50;
+      --btn-text: #ffffff;
+    }
+
+    body.dark {
+      --bg-color: #121212;
+      --text-color: #ffffff;
+      --input-bg: #1e1e1e;
+      --btn-bg: #2e7d32;
+      --btn-text: #ffffff;
+    }
+
     body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
       font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       margin-top: 100px;
+      transition: background-color 0.3s, color 0.3s;
     }
+
     input {
       font-size: 1.2rem;
       padding: 8px;
       width: 250px;
       margin-bottom: 10px;
+      background-color: var(--input-bg);
+      color: var(--text-color);
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
+
     button {
       font-size: 1.2rem;
       padding: 8px 16px;
+      background-color: var(--btn-bg);
+      color: var(--btn-text);
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
     }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
     #link {
       margin-top: 20px;
       font-size: 1.1rem;
     }
+
     a {
-      color: green;
+      color: var(--btn-bg);
       text-decoration: none;
       font-weight: bold;
+    }
+
+    .toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
     }
   </style>
 </head>
 <body>
+  <div class="toggle">
+    <label>
+      <input type="checkbox" id="darkModeToggle">
+      Modo escuro
+    </label>
+  </div>
+
   <h2>Gerador de Link do WhatsApp</h2>
-  <input type="text" id="telefone" placeholder="Digite o telefone" maxlength="15"/>
+  <input 
+    type="tel" 
+    id="telefone" 
+    placeholder="Digite o telefone" 
+    maxlength="15" 
+    pattern="[0-9]*" 
+    inputmode="numeric"
+  />
+
   <button onclick="gerarLink()">OK</button>
   <div id="link"></div>
 
   <script>
     const telefoneInput = document.getElementById("telefone");
+    const darkModeToggle = document.getElementById("darkModeToggle");
+
+    // Aplica modo salvo
+    if (localStorage.getItem("darkMode") === "true") {
+      document.body.classList.add("dark");
+      darkModeToggle.checked = true;
+    }
+
+    darkModeToggle.addEventListener("change", () => {
+      document.body.classList.toggle("dark");
+      localStorage.setItem("darkMode", darkModeToggle.checked);
+    });
 
     telefoneInput.addEventListener("input", (e) => {
-      let input = e.target.value.replace(/\D/g, ""); // remove tudo que não for número
+      let input = e.target.value.replace(/\D/g, "");
       if (input.length > 11) input = input.slice(0, 11);
 
       let formatted = "";
@@ -55,7 +124,7 @@
     });
 
     function gerarLink() {
-      const numero = telefoneInput.value.replace(/\D/g, ""); // remove formatação
+      const numero = telefoneInput.value.replace(/\D/g, "");
       if (numero.length < 10) {
         alert("Digite um número válido com DDD.");
         return;
