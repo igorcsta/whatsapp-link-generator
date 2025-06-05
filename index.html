@@ -28,11 +28,11 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 100px;
+      margin-top: 50px;
       transition: background-color 0.3s, color 0.3s;
     }
 
-    input {
+    input, select {
       font-size: 1.2rem;
       padding: 8px;
       width: 250px;
@@ -60,6 +60,8 @@
     #link {
       margin-top: 20px;
       font-size: 1.1rem;
+      text-align: center;
+      word-break: break-all;
     }
 
     a {
@@ -73,6 +75,12 @@
       top: 20px;
       right: 20px;
     }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
   </style>
 </head>
 <body>
@@ -84,16 +92,18 @@
   </div>
 
   <h2>Gerador de Link do WhatsApp</h2>
-  <input 
-    type="tel" 
-    id="telefone" 
-    placeholder="Digite o telefone" 
-    maxlength="15" 
-    pattern="[0-9]*" 
-    inputmode="numeric"
-  />
+  <div class="form-group">
+    <input type="tel" id="telefone" placeholder="Digite o telefone" maxlength="15" pattern="[0-9]*" inputmode="numeric"/>
+    <select id="genero">
+      <option value="M">Cliente Masculino</option>
+      <option value="F">Cliente Feminino</option>
+    </select>
+    <input type="text" id="nomeCliente" placeholder="Nome do Cliente"/>
+    <input type="text" id="nomeCorretor" placeholder="Nome do Corretor"/>
+    <input type="text" id="nomeImobiliaria" placeholder="Nome da Imobiliária"/>
+    <button onclick="gerarLink()">Gerar Link</button>
+  </div>
 
-  <button onclick="gerarLink()">OK</button>
   <div id="link"></div>
 
   <script>
@@ -129,8 +139,29 @@
         alert("Digite um número válido com DDD.");
         return;
       }
-      const link = `https://wa.me/55${numero}`;
-      document.getElementById("link").innerHTML =
+
+      const genero = document.getElementById("genero").value;
+      const nomeCliente = document.getElementById("nomeCliente").value.trim();
+      const nomeCorretor = document.getElementById("nomeCorretor").value.trim();
+      const nomeImobiliaria = document.getElementById("nomeImobiliaria").value.trim();
+
+      if (!nomeCliente || !nomeCorretor || !nomeImobiliaria) {
+        alert("Preencha todos os campos!");
+        return;
+      }
+
+      const saudacao = `Olá, ${nomeCliente}, tudo bem?`;
+      const introducao = `Aqui é o ${nomeCorretor}, da ${nomeImobiliaria}. Tentei te ligar recentemente para conversarmos, mas não consegui falar com você.`;
+      const personalizacao = `Vi que você se cadastrou em nossos anúncios e gostaria muito de entender melhor suas necessidades e oferecer uma assistência personalizada para ${genero === "F" ? "ajudá-la" : "ajudá-lo"} a encontrar o imóvel ideal.`;
+      const convite = `Temos excelentes opções e lançamentos que acredito que você vai gostar muito! Podemos marcar uma conversa por telefone para alinharmos tudo e você me contar melhor o que procura? Qual é o melhor dia e horário para te ligar!`;
+      const fechamento = `Agradeço pela oportunidade e aguardo seu retorno.`;
+
+      const mensagem = `${saudacao}\n\n${introducao}\n\n${personalizacao}\n\n${convite}\n\n${fechamento}`;
+      const mensagemCodificada = encodeURIComponent(mensagem);
+
+      const link = `https://wa.me/55${numero}?text=${mensagemCodificada}`;
+
+      document.getElementById("link").innerHTML = 
         `👉 <a href="${link}" target="_blank">${link}</a>`;
     }
   </script>
