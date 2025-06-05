@@ -101,6 +101,13 @@
     <input type="text" id="nomeCliente" placeholder="Nome do Cliente"/>
     <input type="text" id="nomeCorretor" placeholder="Nome do Corretor"/>
     <input type="text" id="nomeImobiliaria" placeholder="Nome da Imobiliária"/>
+    <select id="saudacao">
+      <option value="Bom dia">Bom dia</option>
+      <option value="Boa tarde">Boa tarde</option>
+      <option value="Boa noite">Boa noite</option>
+      <option value="Olá">Olá</option>
+      <option value="Oi">Oi</option>
+    </select>
     <button onclick="gerarLink()">Gerar Link</button>
   </div>
 
@@ -144,13 +151,14 @@
       const nomeCliente = document.getElementById("nomeCliente").value.trim();
       const nomeCorretor = document.getElementById("nomeCorretor").value.trim();
       const nomeImobiliaria = document.getElementById("nomeImobiliaria").value.trim();
+      const saudacaoSelecionada = document.getElementById("saudacao").value;
 
       if (!nomeCliente || !nomeCorretor || !nomeImobiliaria) {
         alert("Preencha todos os campos!");
         return;
       }
 
-      const saudacao = `Olá, ${nomeCliente}, tudo bem?`;
+      const saudacao = `${saudacaoSelecionada}, ${nomeCliente}, tudo bem?`;
       const introducao = `Aqui é o ${nomeCorretor}, da ${nomeImobiliaria}. Tentei te ligar recentemente para conversarmos, mas não consegui falar com você.`;
       const personalizacao = `Vi que você se cadastrou em nossos anúncios e gostaria muito de entender melhor suas necessidades e oferecer uma assistência personalizada para ${genero === "F" ? "ajudá-la" : "ajudá-lo"} a encontrar o imóvel ideal.`;
       const convite = `Temos excelentes opções e lançamentos que acredito que você vai gostar muito! Podemos marcar uma conversa por telefone para alinharmos tudo e você me contar melhor o que procura? Qual é o melhor dia e horário para te ligar!`;
