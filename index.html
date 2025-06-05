@@ -172,6 +172,17 @@
       document.getElementById("link").innerHTML = 
         `👉 <a href="${link}" target="_blank">Enviar Mensagem</a>`;
     }
+
+    function limparLink() {
+      document.getElementById("link").innerHTML = "";
+    }
+    
+    document.getElementById("telefone").addEventListener("input", limparLink);
+    document.getElementById("nomeCliente").addEventListener("input", limparLink);
+    document.getElementById("nomeCorretor").addEventListener("input", limparLink);
+    document.getElementById("nomeImobiliaria").addEventListener("input", limparLink);
+    document.getElementById("genero").addEventListener("change", limparLink);
+    document.getElementById("saudacao").addEventListener("change", limparLink);
   </script>
 </body>
 </html>
